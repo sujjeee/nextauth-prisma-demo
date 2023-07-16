@@ -8,7 +8,7 @@ import { Input, type InputProps } from "@/components/ui/input"
 import { Icons } from "@/components/icons"
 
 
-export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
+const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, ...props }, ref) => {
         const [showPassword, setShowPassword] = React.useState(false)
 
@@ -41,3 +41,7 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
         )
     }
 )
+
+PasswordInput.displayName = "PasswordInput"
+
+export { PasswordInput }

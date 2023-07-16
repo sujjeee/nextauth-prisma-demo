@@ -25,7 +25,7 @@ export default function ForgotPage() {
                     <CardHeader className="space-y-3">
                         <CardTitle className="text-2xl">Trouble logging in?</CardTitle>
                         <CardDescription>
-                            Enter your email address and we'll send you a link to get back into your account.
+                            Enter your email address and we will send you a link to get back into your account.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-4">
