@@ -42,7 +42,7 @@ export function PassWordResetEmailForm(
         try {
             setIsLoading(true)
 
-            const emailVerifyResponse = await fetch('http://localhost:3000/api/verify-email/', {
+            const emailVerifyResponse = await fetch('/api/verify-email/', {
                 cache: 'no-store',
                 method: 'POST',
                 headers: {

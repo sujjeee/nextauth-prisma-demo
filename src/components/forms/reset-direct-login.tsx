@@ -11,7 +11,7 @@ export default function ResetDirectLogin({ token }: { token: string }) {
 
     React.useEffect(() => {
         const fetchResetData = async () => {
-            const response = await fetch('http://localhost:3000/api/verify-login', {
+            const response = await fetch('/api/verify-login', {
                 cache: 'no-store',
                 method: 'POST',
                 headers: {

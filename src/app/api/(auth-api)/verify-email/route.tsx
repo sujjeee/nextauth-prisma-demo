@@ -30,7 +30,7 @@ export async function POST(
             }
 
             // JwtPrivateKey
-            const jwtSPrivateKey: Secret = process.env.JWT_SECRET_KEY ?? ""
+            const jwtSPrivateKey: Secret = process.env.JWT_SECRET_KEY as string
 
             // Generating JWT token
             const jwtResetToken = jwt.sign(userPayload, jwtSPrivateKey)
@@ -69,7 +69,7 @@ export async function POST(
             }
 
             // todo:  get host name
-            // const hostName = process.env.NEXTAUTH_URL
+            const hostName = process.env.NEXTAUTH_URL
 
             const TOKEN = process.env.MAILTRAP_TOKEN as string;
             const ENDPOINT = process.env.MAILTRAP_ENDPOINT;
@@ -93,8 +93,8 @@ export async function POST(
                 template_uuid: process.env.MAILTRAP_TEMPLATE_UUID as string,
                 template_variables: {
                     "user_email": `${userEmail}`,
-                    "login_link": `http://localhost:3000/account/reset-login?token=${jwtResetToken}`,
-                    "pass_reset_link": `http://localhost:3000/account/password/reset/confirm?token=${jwtResetToken}`
+                    "login_link": `${hostName}?token=${jwtResetToken}`,
+                    "pass_reset_link": `${hostName}/confirm?token=${jwtResetToken}`
                 }
             });
 
@@ -102,7 +102,6 @@ export async function POST(
                 return new Response("Email failed", { status: 401 });
             };
 
-            console.log('tract email conditon', isEmailSent)
             return new Response(JSON.stringify({
                 emailFound: email,
                 token: jwtResetToken

@@ -42,7 +42,7 @@ export function SetNewPasswordForm({ token }: { token: string }) {
 
             setIsLoading(true)
 
-            const response = await fetch('http://localhost:3000/api/reset-password', {
+            const response = await fetch('/api/reset-password', {
                 cache: 'no-store',
                 method: 'POST',
                 headers: {
