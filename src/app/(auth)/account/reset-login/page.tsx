@@ -2,6 +2,7 @@ import { type Metadata } from "next"
 
 import { PrismaClient } from "@prisma/client";
 import ResetDirectLogin from "@/components/forms/reset-direct-login";
+import NotFound from "../not-found";
 
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export default async function SetPasswordPage({ searchParams }: any) {
 
     if (!token) {
         return (
-            <p>Invalid Token</p>
+            <NotFound />
         )
     }
 
@@ -34,6 +35,6 @@ export default async function SetPasswordPage({ searchParams }: any) {
             <ResetDirectLogin token={token} />
         );
     } else {
-        return <p>Page not found.</p>;
+        return <NotFound />;
     }
 }

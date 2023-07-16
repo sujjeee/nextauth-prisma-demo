@@ -1,3 +1,4 @@
+import { type Metadata } from "next"
 import { OAuthSignIn } from '@/components/auth/oauth-signins'
 import { SignUpForm } from '@/components/forms/signup-form'
 import { InfoAlert } from '@/components/info-alert'
@@ -10,6 +11,11 @@ import {
     CardTitle
 } from '@/components/ui/card'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+    title: "Sign Up",
+    description: "Sign up for an account",
+}
 
 
 export default async function signin() {

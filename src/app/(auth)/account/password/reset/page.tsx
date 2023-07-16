@@ -1,6 +1,5 @@
 "use client"
 
-import { type Metadata } from "next"
 import {
     Card,
     CardContent,
@@ -10,11 +9,6 @@ import {
 } from "@/components/ui/card"
 import { PassWordResetEmailForm } from "@/components/forms/password-reset-email-form"
 import * as React from "react"
-
-export const metadata: Metadata = {
-    title: "Reset Password",
-    description: "Enter your email to reset your password",
-}
 
 export default function ForgotPage() {
 

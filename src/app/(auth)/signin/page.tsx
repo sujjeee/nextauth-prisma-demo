@@ -1,3 +1,4 @@
+import { type Metadata } from "next"
 import { OAuthSignIn } from '@/components/auth/oauth-signins'
 import { SignInForm } from '@/components/forms/signin-form'
 import {
@@ -11,9 +12,13 @@ import {
 import Link from 'next/link'
 import { InfoAlert } from '@/components/info-alert'
 
+export const metadata: Metadata = {
+    title: "Sign In",
+    description: "Sign in to your account",
+}
+
 
 export default async function signin() {
-
     return (
         <div className='flex flex-col h-screen bg-background items-center justify-center'>
             <Card>

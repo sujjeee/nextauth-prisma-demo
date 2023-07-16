@@ -8,10 +8,12 @@ import {
     CardTitle
 } from "@/components/ui/card";
 import { SetNewPasswordForm } from "@/components/forms/SetNewPasswordForm";
+import NotFound from "../../../not-found";
+
 
 export const metadata: Metadata = {
-    title: "Set new oasswird",
-    description: "direct login test",
+    title: "Set new password",
+    description: "Set new password for your account",
 }
 
 
@@ -23,7 +25,7 @@ export default async function SetPassword({ searchParams }: any) {
     // get token query
     if (!token) {
         return (
-            <p>token leke aa bhai </p>
+            <NotFound />
         )
     }
 
@@ -52,6 +54,6 @@ export default async function SetPassword({ searchParams }: any) {
             </div>
         );
     } else {
-        return <p>page not found</p>;
+        return <NotFound />;
     }
 }
