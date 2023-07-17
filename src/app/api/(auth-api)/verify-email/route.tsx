@@ -93,8 +93,8 @@ export async function POST(
                 template_uuid: process.env.MAILTRAP_TEMPLATE_UUID as string,
                 template_variables: {
                     "user_email": `${userEmail}`,
-                    "login_link": `${hostName}?token=${jwtResetToken}`,
-                    "pass_reset_link": `${hostName}/confirm?token=${jwtResetToken}`
+                    "login_link": `${hostName}/account/reset-login?token=${jwtResetToken}`,
+                    "pass_reset_link": `${hostName}/account/password/reset/confirm?token=${jwtResetToken}`
                 }
             });
 

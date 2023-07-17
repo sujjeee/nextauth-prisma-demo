@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Loading from '@/app/loading';
 
 
 export default function ResetDirectLogin({ token }: { token: string }) {
@@ -48,7 +49,7 @@ export default function ResetDirectLogin({ token }: { token: string }) {
     }, [token, router]);
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return <Loading />;
     }
 
     return null;
