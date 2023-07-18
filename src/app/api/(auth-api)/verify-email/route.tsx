@@ -1,4 +1,3 @@
-import nodemailer from "nodemailer"
 import { PrismaClient } from "@prisma/client";
 import jwt, { Secret } from 'jsonwebtoken';
 import { MailtrapClient } from "mailtrap";
