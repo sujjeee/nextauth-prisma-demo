@@ -2,12 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import jwt, { Secret } from 'jsonwebtoken';
 import { MailtrapClient } from "mailtrap";
 
-
 export async function POST(
     request: Request,
 ) {
-
-
     try {
         const prisma = new PrismaClient();
         const body = await request.json();
@@ -104,7 +101,6 @@ export async function POST(
                 return new Response("Email failed", { status: 401 });
             };
 
-            console.log('email sent ')
             return new Response(JSON.stringify({
                 emailFound: email,
                 token: jwtResetToken
@@ -116,4 +112,5 @@ export async function POST(
     } catch (error) {
         return new Response("Internal Server Error", { status: 500 });
     }
+
 }
