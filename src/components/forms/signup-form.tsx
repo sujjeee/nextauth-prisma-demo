@@ -56,7 +56,6 @@ export function SignUpForm() {
                 }),
             });
 
-            console.log('checking response', signUpResponse.json())
             if (signUpResponse.ok) {
 
                 // Sign in the user after successful registration
@@ -81,7 +80,7 @@ export function SignUpForm() {
 
         } catch (error) {
             setIsLoading(false)
-            toast.error('Uh oh! Something went wrong.')
+            toast.error('Something went wrong. Please try again later.');
         }
     }
 

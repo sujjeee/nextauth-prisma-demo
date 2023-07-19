@@ -77,7 +77,7 @@ export function SetNewPasswordForm({ token }: { token: string }) {
 
         } catch (error) {
             setIsLoading(false)
-            toast.error('Uh oh! Something went wrong.')
+            toast.error('Something went wrong. Please try again later.');
         }
     }
 
