@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import jwt, { Secret } from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
-interface RequestBody {
+type RequestBody = {
     token: string;
 }
 
@@ -10,8 +11,11 @@ export async function POST(request: Request) {
         const prisma = new PrismaClient();
         const body: RequestBody = await request.json();
 
-        if (!body || !body.token) {
-            return new Response("Missing required fields", { status: 403 });
+        if (!body.token) {
+            return NextResponse.json(
+                { error: "Missing required fields." },
+                { status: 400 }
+            );
         }
 
         const isValidToken = await prisma.verificationToken.findFirst({
@@ -20,10 +24,7 @@ export async function POST(request: Request) {
             },
         });
 
-        if (
-            isValidToken &&
-            isValidToken.token === body.token
-        ) {
+        if (isValidToken && isValidToken.token === body.token) {
             // verify jwt token
             const jwtSPrivateKey: Secret = process.env.JWT_SECRET_KEY as string
             const jwtResetToken = jwt.verify(body.token, jwtSPrivateKey)
@@ -37,21 +38,32 @@ export async function POST(request: Request) {
                         signatureToken: isValidToken.token,
                     },
                 });
-
-                return new Response(
-                    JSON.stringify({
-                        email: isValidToken.email
-                    }),
+                return NextResponse.json(
+                    { email: isValidToken.email },
                     { status: 200 }
                 );
             }
         }
         else {
-            return new Response("Access denied", { status: 404 });
+            return NextResponse.json(
+                { error: "auntherize access" },
+                { status: 403 }
+            );
         }
     } catch (error) {
         console.error(error);
-        return new Response("Internal Server Error", { status: 500 });
+        if (error instanceof Prisma.PrismaClientInitializationError) {
+            return NextResponse.json(
+                { error: "Database connection error. Please try again later." },
+                { status: 409 }
+            );
+        };
+
+        return NextResponse.json(
+            { error: "Internal Server Error. Please try again later." },
+            { status: 500 }
+        );
+
     }
 }
 

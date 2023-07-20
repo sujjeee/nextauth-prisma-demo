@@ -83,7 +83,7 @@ export function OAuthSignIn() {
                 callbackUrl: "http://localhost:3000",
                 redirect: false
             });
-            console.log('oauth respone ', res)
+
         } catch (error) {
             setIsLoading(null);
             console.error("Something went wrong, please try again.");

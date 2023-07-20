@@ -67,15 +67,16 @@ export function SignUpForm() {
 
                 if (signInResponse?.error !== null) {
                     setIsLoading(false)
-                    toast.error("Unable to login.");
+                    toast.error(signInResponse?.error || "Unable to login.");
                 } else {
                     router.push("/");
                     setIsLoading(false);
                 }
 
             } else {
+                const errorData = await signUpResponse.json();
                 setIsLoading(false)
-                toast.error('That email address is taken. Please try another.')
+                toast.error(errorData.error || "Something went wrong. Please try again later.");
             }
 
         } catch (error) {

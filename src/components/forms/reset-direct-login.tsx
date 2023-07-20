@@ -12,36 +12,41 @@ export default function ResetDirectLogin({ token }: { token: string }) {
 
     React.useEffect(() => {
         const fetchResetData = async () => {
-            const response = await fetch('/api/verify-login', {
-                cache: 'no-store',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    token: token,
-                }),
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                const { email } = data;
-
-                const res = await signIn('credentials', {
-                    email: email,
-                    getLoginToken: token,
-                    redirect: false,
+            try {
+                const response = await fetch('/api/verify-login', {
+                    cache: 'no-store',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: token,
+                    }),
                 });
 
-                if (res?.error === null) {
-                    router.push('/');
-                    setIsLoading(false);
+                if (response.status === 200) {
+                    const data = await response.json();
+                    const { email } = data;
+
+                    const res = await signIn('credentials', {
+                        email: email,
+                        getLoginToken: token,
+                        redirect: false,
+                    });
+
+                    if (res?.error === null) {
+                        router.push('/');
+                        setIsLoading(false);
+                    } else {
+                        router.push('/signin');
+                        setIsLoading(false);
+                    }
                 } else {
-                    router.push('/signin');
                     setIsLoading(false);
                 }
-            } else {
+            } catch (error) {
                 setIsLoading(false);
+                console.error(error)
             }
         };
 

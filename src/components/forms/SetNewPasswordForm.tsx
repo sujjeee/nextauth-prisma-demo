@@ -70,8 +70,8 @@ export function SetNewPasswordForm({ token }: { token: string }) {
                     toast.error("Can't able to login.")
                     setIsLoading(false)
                 } else {
-                    router.push('/')
                     setIsLoading(false)
+                    router.push('/')
                 }
             }
 
