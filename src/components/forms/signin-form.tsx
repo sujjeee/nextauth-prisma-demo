@@ -53,6 +53,7 @@ export function SignInForm() {
                 toast.error('Invalid Credentials.')
             } else {
                 setIsLoading(false)
+                router.refresh();
                 router.push('/')
             }
 

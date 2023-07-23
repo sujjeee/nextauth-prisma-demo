@@ -27,6 +27,7 @@ export default function ResetDirectLogin({ token }: { token: string }) {
                     });
 
                     if (signInResponse?.error === null) {
+                        router.refresh()
                         router.push('/');
                         setIsLoading(false);
                     }

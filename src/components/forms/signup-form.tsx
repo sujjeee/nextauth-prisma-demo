@@ -56,6 +56,7 @@ export function SignUpForm() {
                     setIsLoading(false)
                     toast.error(signInResponse?.error || "Unable to login. Please try later.");
                 } else {
+                    router.refresh();
                     router.push("/");
                     setIsLoading(false);
                 }
@@ -67,9 +68,12 @@ export function SignUpForm() {
 
         } catch (error) {
             setIsLoading(false)
-            error instanceof Error
-                ? toast.error(error.message)
-                : toast.error("Something went wrong. Please try again later.");
+            if (error instanceof Error) {
+                toast.error(error.message)
+            } else {
+                toast.error("Something went wrong. Please try again later.");
+            }
+
         }
     }
 

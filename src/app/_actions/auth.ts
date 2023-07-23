@@ -1,7 +1,7 @@
 "use server"
 
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt"
+import { hash, genSalt } from "bcrypt"
 import {
     emailType,
     setNewPasswordType,
@@ -27,8 +27,8 @@ export async function getSignupAction(params: signUpType) {
     if (existingUser && existingUser.email === email) {
         throw new Error("That email address is taken. Please try another.")
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const salt = await genSalt(10);
+    const hashedPassword = await hash(password, salt);
 
     const newUser = await prisma.user.create({
         data: {
@@ -190,8 +190,8 @@ export async function SetNewPassWordAction(params: setNewPasswordType) {
 
     if (isValidToken && isValidToken.expires > new Date()) {
 
-        const salt = await bcrypt.genSalt(10);
-        const hashPass = await bcrypt.hash(password, salt);
+        const salt = await genSalt(10);
+        const hashPass = await hash(password, salt);
 
         const user = await prisma.user.update({
             where: {

@@ -56,6 +56,7 @@ export function SetNewPasswordForm({ token }: { token: string }) {
                     setIsLoading(false)
                     toast.error(signInResponse?.error || "Unable to login. Please try later.");
                 } else {
+                    router.refresh()
                     router.push("/");
                     setIsLoading(false);
                 }
