@@ -61,20 +61,6 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
-  callbacks: {
-    async signIn({ user }) {
-      const existingUser = await prisma.user.findUnique({
-        where: {
-          email: user.email ?? ""
-        }
-      });
-      if (existingUser) {
-        return true
-      } else {
-        return false
-      }
-    }
-  },
   secret: process.env.JWT_SESSION_SECRET as string,
 }
 
