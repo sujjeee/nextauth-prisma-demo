@@ -3,7 +3,6 @@
 import * as React from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import type { z } from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
@@ -20,8 +19,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { Icons } from "@/components/icons"
-
-type Inputs = z.infer<typeof authSignupSchema>
+import { getSignupAction } from "@/app/_actions/auth";
+import { signUpType } from "@/types";
 
 
 export function SignUpForm() {
@@ -29,7 +28,7 @@ export function SignUpForm() {
     const router = useRouter()
     const [isLoading, setIsLoading] = React.useState(false)
 
-    const form = useForm<Inputs>({
+    const form = useForm<signUpType>({
         resolver: zodResolver(authSignupSchema),
         defaultValues: {
             name: "",
@@ -38,25 +37,13 @@ export function SignUpForm() {
         },
     })
 
-    async function onSubmit(data: Inputs) {
+    async function onSubmit(data: signUpType) {
         try {
-
             setIsLoading(true);
 
-            const signUpResponse = await fetch("/api/signup", {
-                cache: 'no-store',
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: data.email,
-                    name: data.name,
-                    password: data.password
-                }),
-            });
+            const signUp = await getSignupAction(data)
 
-            if (signUpResponse.ok) {
+            if (signUp.success) {
 
                 // Sign in the user after successful registration
                 const signInResponse = await signIn("credentials", {
@@ -67,21 +54,22 @@ export function SignUpForm() {
 
                 if (signInResponse?.error !== null) {
                     setIsLoading(false)
-                    toast.error(signInResponse?.error || "Unable to login.");
+                    toast.error(signInResponse?.error || "Unable to login. Please try later.");
                 } else {
                     router.push("/");
                     setIsLoading(false);
                 }
 
             } else {
-                const errorData = await signUpResponse.json();
                 setIsLoading(false)
-                toast.error(errorData.error || "Something went wrong. Please try again later.");
+                toast.error("Something went wrong. Please try again later.");
             }
 
         } catch (error) {
             setIsLoading(false)
-            toast.error('Something went wrong. Please try again later.');
+            error instanceof Error
+                ? toast.error(error.message)
+                : toast.error("Something went wrong. Please try again later.");
         }
     }
 

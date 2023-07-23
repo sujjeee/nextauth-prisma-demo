@@ -1,48 +1,35 @@
-'use client'
+"use client"
 
 import * as React from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Loading from '@/app/loading';
+import { getLoginAction } from '@/app/_actions/auth';
+import NotFound from "@/app/(auth)/account/not-found"
 
 
 export default function ResetDirectLogin({ token }: { token: string }) {
+
     const [isLoading, setIsLoading] = React.useState(true);
     const router = useRouter();
 
     React.useEffect(() => {
         const fetchResetData = async () => {
             try {
-                const response = await fetch('/api/verify-login', {
-                    cache: 'no-store',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        token: token,
-                    }),
-                });
+                const directLoginResponse = await getLoginAction(token)
 
-                if (response.status === 200) {
-                    const data = await response.json();
-                    const { email } = data;
+                if (directLoginResponse?.success) {
 
-                    const res = await signIn('credentials', {
-                        email: email,
+                    const signInResponse = await signIn('credentials', {
+                        email: directLoginResponse.email,
                         getLoginToken: token,
                         redirect: false,
                     });
 
-                    if (res?.error === null) {
+                    if (signInResponse?.error === null) {
                         router.push('/');
                         setIsLoading(false);
-                    } else {
-                        router.push('/signin');
-                        setIsLoading(false);
                     }
-                } else {
-                    setIsLoading(false);
                 }
             } catch (error) {
                 setIsLoading(false);
@@ -57,5 +44,5 @@ export default function ResetDirectLogin({ token }: { token: string }) {
         return <Loading />;
     }
 
-    return null;
+    return <NotFound />;
 }

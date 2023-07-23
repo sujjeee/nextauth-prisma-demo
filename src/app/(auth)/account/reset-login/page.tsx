@@ -12,10 +12,8 @@ export const metadata: Metadata = {
 
 export default async function SetPasswordPage({ searchParams }: any) {
     const prisma = new PrismaClient();
-
-    // Take token query form url
     const { token } = searchParams
-
+    // get token query
     if (!token) {
         return (
             <NotFound />
@@ -23,14 +21,13 @@ export default async function SetPasswordPage({ searchParams }: any) {
     }
 
     // Verify the token form database 
-    const isValidToken = await prisma.verificationToken.findFirst({
+    const isValidToken = await prisma.verificationToken.findUnique({
         where: {
             token: token,
         },
     });
 
-
-    if (isValidToken && isValidToken.expires > new Date()) {
+    if (!isValidToken || isValidToken.expires > new Date()) {
         return (
             <ResetDirectLogin token={token} />
         );

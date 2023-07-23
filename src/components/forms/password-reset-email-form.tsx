@@ -16,9 +16,9 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { checkEmailSchema } from "@/lib/validations/auth"
 import { toast } from "sonner"
+import { emailType } from "@/types";
+import { sendEmailAction } from "@/app/_actions/auth"
 
-
-type Inputs = z.infer<typeof checkEmailSchema>
 
 type PassWordResetEmailFormProps = {
     onEmailFound: (value: string) => void;
@@ -31,41 +31,27 @@ export function PassWordResetEmailForm(
     const [isLoading, setIsLoading] = React.useState(false)
 
 
-    const form = useForm<Inputs>({
+    const form = useForm<emailType>({
         resolver: zodResolver(checkEmailSchema),
         defaultValues: {
             email: "",
         },
     })
 
-    async function onSubmit(data: Inputs) {
+    async function onSubmit(data: emailType) {
         try {
             setIsLoading(true)
+            const email = await sendEmailAction(data)
 
-            const emailVerifyResponse = await fetch('/api/verify-email/', {
-                cache: 'no-store',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: data.email })
-            });
-
-            if (emailVerifyResponse.status === 200) {
-
-                const data = await emailVerifyResponse.json();
-                const getEmailValue = data.emailFound;
-
-                // send email to parent component after verify 
-                onEmailFound(getEmailValue)
+            if (email.success) {
+                onEmailFound(email.emailFound)
                 setIsLoading(false)
-            } else {
-                setIsLoading(false)
-                toast.error('Invalid Credentials.')
             }
         } catch (error) {
             setIsLoading(false)
-            toast.error('Something went wrong. Please try again later.');
+            error instanceof Error
+                ? toast.error(error.message)
+                : toast.error("Something went wrong. Please try again later.");
         }
     }
 

@@ -39,12 +39,11 @@ export const EmailVerifyCodeSchema = z.object({
             .max(6),
 });
 
-export const resetPasswordSchema = z
-    .object({
-        password: authSigninSchema.shape.password,
-        confirmPassword: authSigninSchema.shape.password,
-        token: z.string()
-    })
+export const setNewPasswordSchema = z.object({
+    password: authSigninSchema.shape.password,
+    confirmPassword: authSigninSchema.shape.password,
+    token: z.string()
+})
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",
         path: ["confirmPassword"],
