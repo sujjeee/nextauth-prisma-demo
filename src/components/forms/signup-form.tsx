@@ -45,7 +45,7 @@ export function SignUpForm() {
 
             if (signUp.success) {
 
-                // Sign in the user after successful registration
+                // Auto signin the user after successful registration
                 const signInResponse = await signIn("credentials", {
                     email: data.email,
                     password: data.password,
@@ -68,11 +68,9 @@ export function SignUpForm() {
 
         } catch (error) {
             setIsLoading(false)
-            if (error instanceof Error) {
-                toast.error(error.message)
-            } else {
-                toast.error("Something went wrong. Please try again later.");
-            }
+            error instanceof Error
+                ? toast.error(error.message)
+                : toast.error("Something went wrong. Please try again later.");
 
         }
     }
