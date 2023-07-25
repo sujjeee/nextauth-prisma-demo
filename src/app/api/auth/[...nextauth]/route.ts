@@ -3,8 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt"
-
+import { comparePassword } from "@/lib/passwordSecurity"
 const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
@@ -37,7 +36,11 @@ export const authOptions: NextAuthOptions = {
         }
 
         if (password && !getLoginToken) {
-          const checkPassword = await bcrypt.compare(password, isUser?.password ?? "");
+          const checkPassword = await comparePassword({
+            userPassword: password,
+            dbPassword: isUser?.password ?? "",
+          });
+          console.log('checking login password', checkPassword)
           if (checkPassword) {
             return isUser;
           }

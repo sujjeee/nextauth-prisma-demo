@@ -1,7 +1,6 @@
 "use server"
 
 import { PrismaClient } from "@prisma/client";
-import { hash, genSalt } from "bcrypt"
 import {
     emailType,
     setNewPasswordType,
@@ -9,7 +8,7 @@ import {
 } from "@/types";
 import jwt, { Secret } from "jsonwebtoken";
 import { MailtrapClient } from "mailtrap";
-
+import { hashPassword } from "@/lib/passwordSecurity"
 const prisma = new PrismaClient();
 const jwtSPrivateKey: Secret = process.env.JWT_SECRET_KEY as string
 
@@ -27,8 +26,8 @@ export async function getSignupAction(params: signUpType) {
     if (existingUser && existingUser.email === email) {
         throw new Error("That email address is taken. Please try another.")
     }
-    const salt = await genSalt(10);
-    const hashedPassword = await hash(password, salt);
+
+    const hashedPassword = await hashPassword(password)
 
     const newUser = await prisma.user.create({
         data: {
@@ -190,15 +189,14 @@ export async function SetNewPassWordAction(params: setNewPasswordType) {
 
     if (isValidToken && isValidToken.expires > new Date()) {
 
-        const salt = await genSalt(10);
-        const hashPass = await hash(password, salt);
+        const hashedPassword = await hashPassword(password)
 
         const user = await prisma.user.update({
             where: {
                 id: isValidToken.identifier,
             },
             data: {
-                password: hashPass,
+                password: hashedPassword,
             },
         });
 
