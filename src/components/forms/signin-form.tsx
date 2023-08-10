@@ -41,21 +41,22 @@ export function SignInForm() {
     async function onSubmit(data: Inputs) {
         try {
             setIsLoading(true)
+            toast.error("DataBase is not connected! Please checkout github repository.");
+            setIsLoading(false)
+            // const signInResponse = await signIn('credentials', {
+            //     email: data.email,
+            //     password: data.password,
+            //     redirect: false,
+            // })
 
-            const signInResponse = await signIn('credentials', {
-                email: data.email,
-                password: data.password,
-                redirect: false,
-            })
-
-            if (signInResponse?.error !== null) {
-                setIsLoading(false)
-                toast.error('Invalid Credentials.')
-            } else {
-                setIsLoading(false)
-                router.refresh();
-                router.push('/')
-            }
+            // if (signInResponse?.error !== null) {
+            //     setIsLoading(false)
+            //     toast.error('Invalid Credentials.')
+            // } else {
+            //     setIsLoading(false)
+            //     router.refresh();
+            //     router.push('/')
+            // }
 
         } catch (error) {
             setIsLoading(false)

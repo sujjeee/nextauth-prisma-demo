@@ -41,12 +41,14 @@ export function PassWordResetEmailForm(
     async function onSubmit(data: emailType) {
         try {
             setIsLoading(true)
-            const email = await sendEmailAction(data)
+            toast.error("DataBase is not connected! Please checkout github repository.");
+            setIsLoading(false)
+            // const email = await sendEmailAction(data)
 
-            if (email.success) {
-                onEmailFound(email.emailFound)
-                setIsLoading(false)
-            }
+            // if (email.success) {
+            //     onEmailFound(email.emailFound)
+            //     setIsLoading(false)
+            // }
         } catch (error) {
             setIsLoading(false)
             error instanceof Error

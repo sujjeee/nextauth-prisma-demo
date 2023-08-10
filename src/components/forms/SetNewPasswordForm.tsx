@@ -40,28 +40,30 @@ export function SetNewPasswordForm({ token }: { token: string }) {
         try {
 
             setIsLoading(true)
+            toast.error("DataBase is not connected! Please checkout github repository.");
+            setIsLoading(false)
 
-            const setPasswordResponse = await SetNewPassWordAction(data)
+            // const setPasswordResponse = await SetNewPassWordAction(data)
 
-            if (setPasswordResponse?.success) {
+            // if (setPasswordResponse?.success) {
 
-                // Sign in the user after successful set new passowrd
-                const signInResponse = await signIn("credentials", {
-                    email: setPasswordResponse.email,
-                    password: data.password,
-                    redirect: false,
-                });
+            //     // Sign in the user after successful set new passowrd
+            //     const signInResponse = await signIn("credentials", {
+            //         email: setPasswordResponse.email,
+            //         password: data.password,
+            //         redirect: false,
+            //     });
 
-                if (signInResponse?.error !== null) {
-                    setIsLoading(false)
-                    toast.error(signInResponse?.error || "Unable to login. Please try later.");
-                } else {
-                    router.refresh()
-                    router.push("/");
-                    setIsLoading(false);
-                }
+            //     if (signInResponse?.error !== null) {
+            //         setIsLoading(false)
+            //         toast.error(signInResponse?.error || "Unable to login. Please try later.");
+            //     } else {
+            //         router.refresh()
+            //         router.push("/");
+            //         setIsLoading(false);
+            //     }
 
-            }
+            // }
 
         } catch (error) {
             setIsLoading(false)

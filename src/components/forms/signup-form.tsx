@@ -40,31 +40,32 @@ export function SignUpForm() {
     async function onSubmit(data: signUpType) {
         try {
             setIsLoading(true);
+            toast.error("DataBase is not connected! Please checkout github repository.");
+            setIsLoading(false)
 
-            const signUp = await getSignupAction(data)
+            // const signUp = await getSignupAction(data)
+            // if (signUp.success) {
 
-            if (signUp.success) {
+            //     // Auto signin the user after successful registration
+            //     const signInResponse = await signIn("credentials", {
+            //         email: data.email,
+            //         password: data.password,
+            //         redirect: false,
+            //     });
 
-                // Auto signin the user after successful registration
-                const signInResponse = await signIn("credentials", {
-                    email: data.email,
-                    password: data.password,
-                    redirect: false,
-                });
+            //     if (signInResponse?.error !== null) {
+            //         setIsLoading(false)
+            //         toast.error(signInResponse?.error || "Unable to login. Please try later.");
+            //     } else {
+            //         router.refresh();
+            //         router.push("/");
+            //         setIsLoading(false);
+            //     }
 
-                if (signInResponse?.error !== null) {
-                    setIsLoading(false)
-                    toast.error(signInResponse?.error || "Unable to login. Please try later.");
-                } else {
-                    router.refresh();
-                    router.push("/");
-                    setIsLoading(false);
-                }
-
-            } else {
-                setIsLoading(false)
-                toast.error("Something went wrong. Please try again later.");
-            }
+            // } else {
+            //     setIsLoading(false)
+            //     toast.error("Something went wrong. Please try again later.");
+            // }
 
         } catch (error) {
             setIsLoading(false)

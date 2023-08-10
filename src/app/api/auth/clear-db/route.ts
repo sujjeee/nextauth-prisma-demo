@@ -1,7 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
-import { compare } from "bcrypt";
 import { comparePassword } from "@/lib/passwordSecurity";
 
 type RequestBody = {
@@ -9,6 +7,7 @@ type RequestBody = {
     password: string;
 }
 
+// api/auth/clear-db
 export async function POST(request: NextRequest) {
     try {
         const prisma = new PrismaClient();
@@ -58,7 +57,6 @@ export async function POST(request: NextRequest) {
         }
 
     } catch (error) {
-        console.log(error)
         if (error instanceof Prisma.PrismaClientInitializationError) {
             return NextResponse.json(
                 { error: "Database connection error. Please try again later." },
@@ -70,7 +68,6 @@ export async function POST(request: NextRequest) {
             { error: "Internal Server Error. Please try again later." },
             { status: 500 }
         );
-
     }
 }
 
