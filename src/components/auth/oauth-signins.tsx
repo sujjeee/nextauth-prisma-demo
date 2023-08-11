@@ -104,7 +104,8 @@ export function OAuthSignIn() {
                         aria-label={`Sign in with ${provider.name}`}
                         variant="outline"
                         onClick={() => oauthSignIn(provider.strategy)}
-                        disabled={isLoading !== null || isButtonDisabled}
+                        // disabled={isLoading !== null || isButtonDisabled}
+                        disabled={true}
                     >
                         {isLoading === provider.strategy ? (
                             <Icons.spinner
